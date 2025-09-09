@@ -18,6 +18,7 @@ const getProductByIdServices = async (idProduct) => {
 
 const createProductServices = async (body, file) => {
     const newProduct = new ProductModel(body)
+    newProduct.image = file.filename
     await newProduct.save()
     return {
         msg: "Producto creado con éxito",
