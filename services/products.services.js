@@ -41,4 +41,26 @@ const deleteProductServices = async (idProduct) => {
     }
 }
 
-module.exports = {getAllProductsServices, getProductByIdServices, createProductServices, editProductServices, deleteProductServices}
+const changeStateProductServices = async (idProduct) => {
+    try {
+        const product = await ProductModel.findById(idProduct)
+        if (product.enabled) {
+            product.enabled = false
+        }
+        else {
+            product.enabled = true
+        }
+        await product.save()
+        return {
+            msg: `Producto ${product.enabled ? "habilitado" : "deshabilitado"}`,
+            statusCode: 200
+        }
+    } catch (error) {
+        return {
+            error,
+            statusCode: 500
+        }
+    }
+}
+
+module.exports = {getAllProductsServices, getProductByIdServices, createProductServices, editProductServices, deleteProductServices, changeStateProductServices}
