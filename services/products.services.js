@@ -1,4 +1,6 @@
 const ProductModel = require("../models/productModel")
+const fs = require("fs")
+const path = require("path")
 
 const getAllProductsServices = async () => {
     const products = await ProductModel.find()
@@ -26,11 +28,28 @@ const createProductServices = async (body, file) => {
     }
 }
 
-const editProductServices = async (idProduct, body) => {
-    await ProductModel.findByIdAndUpdate({_id: idProduct}, body)
-    return {
-        msg: "Producto editado con éxito",
-        statusCode: 201
+const editProductServices = async (idProduct, body, file) => {
+    try {
+        if (file) {
+            const currentProduct = await ProductModel.findById(idProduct)
+            if (currentProduct && currentProduct.image) {
+                const oldImagePath = path.join(__dirname, "../public", currentProduct.image)
+                if (fs.existsSync(oldImagePath)) {
+                    fs.unlinkSync(oldImagePath)
+                }
+            }
+            body.image = file.filename
+        }
+        await ProductModel.findByIdAndUpdate({_id: idProduct}, body)
+        return {
+            msg: "Producto editado con éxito",
+            statusCode: 200
+        }
+    } catch (error) {
+        return {
+            msg: "Error al editar producto",
+            statusCode: 500
+        }
     }
 }
 

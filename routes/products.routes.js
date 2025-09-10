@@ -6,7 +6,7 @@ const router = express.Router()
 router.get("/", getAllProducts)
 router.get("/:id", getProductById)
 router.post("/", multerMidllewares.single("image"), createProduct)
-router.put("/:id", editProduct)
+router.put("/:id", multerMidllewares.single("image"), editProduct)
 router.put("/changeState/:idProduct" , changeStateProduct)
 router.delete("/:id", deleteProduct)
 
