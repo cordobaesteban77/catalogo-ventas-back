@@ -16,7 +16,7 @@ const createProduct = async (req, res) => {
 }
 
 const editProduct = async (req, res) => {
-    const {msg, statusCode} = await editProductServices(req.params.id, req.body)
+    const {msg, statusCode} = await editProductServices(req.params.id, req.body, req.file)
     res.status(statusCode).json({msg})
 }
 
