@@ -35,4 +35,35 @@ const createUserServices = async (body) => { //FALTA AGREGAR NODEMAILER
     }
 }
 
-module.exports = {getAllUsersServices, getUserByIdServices, createUserServices}
+const loginServices = async (body) => {
+    const userExist = await UserModel.findOne({userName: body.userName})
+    if (!userExist) {
+        return {
+            msg: "usuario y/o contraseña incorrecto",
+            statusCode: 400
+        }
+    }
+    const passCheck = await argon.verify(userExist.password, body.password)
+    if (!passCheck) {
+        return {
+            msg: "usuario y/o contraseña incorrecto",
+            statusCode: 400
+        }
+    }
+
+    const payload = {
+        idUser: userExist._id,
+        rollUser: userExist.roll
+    }
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "24h"})
+
+    return {
+        msg: "Inicio de sesion exitoso",
+        token,
+        roll: userExist.roll,
+        statusCode: 200
+    }
+}
+
+module.exports = {getAllUsersServices, getUserByIdServices, createUserServices, loginServices}
