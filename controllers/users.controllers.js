@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
 }
 
 const login = async (req, res) => {
-    const {statusCode, msg, token, roll} = await (req.body)
+    const {statusCode, msg, token, roll} = await loginServices(req.body)
     res.status(statusCode).json({msg,token,roll})
 }
 
