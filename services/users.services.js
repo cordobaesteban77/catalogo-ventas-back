@@ -27,7 +27,7 @@ const createUserServices = async (body) => { //FALTA AGREGAR NODEMAILER
             msg: "Usuario creado con éxito",
             statusCode: 201
         }
-    } catch {
+    } catch (error) {
         return {
             error,
             statusCode: 500
