@@ -1,4 +1,4 @@
-const {getAllUsersServices, getUserByIdServices, createUserServices, loginServices} = require("../services/users.services")
+const {getAllUsersServices, getUserByIdServices, createUserServices, loginServices, recoverPassUserServices} = require("../services/users.services")
 const { validationResult } = require("express-validator")
 
 const getAllUsers = async (req, res) => {
@@ -33,4 +33,13 @@ const login = async (req, res) => {
     res.status(statusCode).json({msg,token,roll})
 }
 
-module.exports = {getAllUsers, getUserById, createUser, login}
+const recoverPassUser = async (req, res) => {
+    const {msg, statusCode, error} = await recoverPassUserServices(req.body.email)
+    try {
+        res.status(statusCode).json({msg})
+    } catch {
+        res.status(statusCode).json({error})
+    }
+}
+
+module.exports = {getAllUsers, getUserById, createUser, login, recoverPassUser}
