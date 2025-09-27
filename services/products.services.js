@@ -54,6 +54,13 @@ const editProductServices = async (idProduct, body, file) => {
 }
 
 const deleteProductServices = async (idProduct) => {
+    const product = await ProductModel.findById(idProduct)
+    if (product && product.image) {
+        const imagePath = path.join(__dirname, "../public", product.image)
+        if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath)
+        }
+    }
     await ProductModel.findByIdAndDelete({_id: idProduct})
     return {
         msg: "Producto eliminado con éxito",
