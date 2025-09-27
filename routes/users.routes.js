@@ -1,5 +1,5 @@
 const {Router} = require("express")
-const {getAllUsers, getUserById, createUser, login} = require("../controllers/users.controllers")
+const {getAllUsers, getUserById, createUser, login, recoverPassUser} = require("../controllers/users.controllers")
 const router = Router()
 const {check} = require("express-validator")
 
@@ -14,5 +14,6 @@ router.post("/", [
     check("password", "ERROR, la contraseña debe tener un minimo de 8 caracteres").isLength({min:8})
 ], createUser)
 router.post("/login", login)
+router.post("/recoverPass", recoverPassUser)
 
 module.exports = router

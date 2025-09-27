@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel")
 const argon = require("argon2")
 const jwt = require("jsonwebtoken")
+const { recoverPass } = require("../helpers/msg.nodemailer")
 
 const getAllUsersServices = async () => {
     const users = await UserModel.find()
@@ -66,4 +67,27 @@ const loginServices = async (body) => {
     }
 }
 
-module.exports = {getAllUsersServices, getUserByIdServices, createUserServices, loginServices}
+const recoverPassUserServices = async (email) => {
+    try {
+        const userExist = await UserModel.findOne({email})
+        if (userExist) {
+            const payload = {
+                idUser: userExist._id
+            }
+            const tokenRecoverPass = jwt.sign(payload, process.env.JWT_SECRET_RECOVER_PASS)
+            await recoverPass(tokenRecoverPass, userExist.email)
+            return {
+                msg: "Correo enviado",
+                statusCode: 200
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        return {
+            error,
+            statusCode: 500
+        }
+    }
+}
+
+module.exports = {getAllUsersServices, getUserByIdServices, createUserServices, loginServices, recoverPassUserServices}
