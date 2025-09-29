@@ -5,6 +5,11 @@ const cors = require("cors")
 const path = require("path")
 const morgan = require("morgan")
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  // "https://proyecto-final-out-gym-front-iota.vercel.app"
+];
+
 //middlewares
 app.use(express.json())
 app.use("/public", express.static(path.join(__dirname, "public")))
