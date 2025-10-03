@@ -7,7 +7,7 @@ const morgan = require("morgan")
 
 const allowedOrigins = [
   "http://localhost:5173",
-  // "https://proyecto-final-out-gym-front-iota.vercel.app"
+  "https://catalogo-ventas-front.vercel.app"
 ];
 
 //middlewares
